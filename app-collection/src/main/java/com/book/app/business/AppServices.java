@@ -108,6 +108,33 @@ public class AppServices implements InfAppServices  {
 	@Override
 	public void addItem(String collectionId, Item item, byte[] bytes) {
 		// TODO Auto-generated method stub
+		Collection collection = entityManager.find(Collection.class, collectionId); 
+		if(collection==null){
+			throw new EntityNotFoundException(""
+					+ "No se encuentra una collection con el userId: " + collectionId); 
+		}
+		
+		collection.getItems().add(item);
+		Image imagen=null;
+		
+		if(bytes!=null){
+			imagen=new Image();
+			imagen.setBytes(bytes);
+			addImage(item.getId(),imagen);
+		}
+		
+		item.setImage(imagen);
+		entityManager.flush();
+		
+		
+		if(bytes!=null){
+	        String url = "image_" + imagen.getId() + ".jpg";
+	        imagen.setUrl(url); 
+		}
+		
+		entityManager.persist(item); 
+		item.setCollection(collection);
+		collection.getItems().add(item);
 		
 	}
 	

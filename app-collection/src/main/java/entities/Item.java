@@ -23,10 +23,9 @@ public class Item {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String bookId;
-	private String author; 
+    private String itemId;
+	private String name; 
     private String description; 
-    private String title;
     
     
     
@@ -38,23 +37,17 @@ public class Item {
 			optional=false)
     Image image; 
     
+   
     
     
-    public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
 
 	public String getDescription() {
 		return description;
@@ -65,15 +58,32 @@ public class Item {
 	}
 
     public String getId() { 
-        return bookId;
+        return itemId;
+    }
+    
+    
+    public Image getImage(){
+    	return image;
+    }
+    
+    public void setImage(Image image){
+    	this.image=image;
+    }
+    
+    public Collection getCollection(){
+    	return collection;
+    }
+    
+    public void setCollection(Collection collection){
+    	this.collection=collection;
     }
 
   
     @Override
     public String toString() {
         return "Book{" +
-                "bookId=" + bookId +
-                ", bookTitle='" + title + '\'' +
+                "itemId=" + itemId +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
