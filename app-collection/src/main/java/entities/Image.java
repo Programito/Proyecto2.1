@@ -66,6 +66,5 @@ public class Image {
 		this.url = url;
 	}
 
-
 }
 

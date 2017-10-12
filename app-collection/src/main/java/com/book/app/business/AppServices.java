@@ -127,10 +127,10 @@ public class AppServices implements InfAppServices  {
 		entityManager.flush();
 		
 		
-		if(bytes!=null){
+		/*if(bytes!=null){
 	        String url = "image_" + imagen.getId() + ".jpg";
 	        imagen.setUrl(url); 
-		}
+		}*/
 		
 		entityManager.persist(item); 
 		item.setCollection(collection);
@@ -141,24 +141,52 @@ public class AppServices implements InfAppServices  {
 	@Override
 	public void addImage(String itemId, Image image) {
 		// TODO Auto-generated method stub
+		Item item = entityManager.find(Item.class, itemId); 
+		if(item==null){
+			throw new EntityNotFoundException(""
+					+ "No se encuentra un item con el itemId: " + itemId); 
+		}
 		
+		entityManager.persist(image); 
+		// No existe el item en image image.setItem(item); 
+		if(image.getBytes()!=null){
+			 String url = "image_" + image.getId() + ".jpg";
+		     image.setUrl(url); 
+		}
 	}
 
 	@Override
 	public void updateItem(Item item, byte[] bytes) {
 		// TODO Auto-generated method stub
-		
+		String itemId = item.getId();
+		//Peta en el find!!!
+		Item itemOld= entityManager.find(Item.class,itemId);
+		if(item.getName()!=null &&  !item.getName().equals(""))
+			 itemOld.setName(item.getName());
+		if(item.getDescription()!=null &&  !item.getDescription().equals(""))
+			 itemOld.setDescription(item.getDescription());
+		Image imagen=null;
+		if(bytes!=null){
+			imagen=new Image();
+			imagen.setBytes(bytes);
+			addImage(item.getId(),imagen);
+		}
 	}
 
-
-	
-
-	
-	
 	@Override
 	public void removeItem(String itemId) {
 		// TODO Auto-generated method stub
+		Item item=entityManager.find(Item.class,itemId);
+		Collection collec=entityManager.find(Collection.class,item.getCollection().getId());
+		Set<Item> list=collec.getItems();
 		
+		for(Item i:list){
+			if(i.equals(item)){
+				list.remove(i);
+				System.out.println("Borrado el " + i.getName());
+				break;
+			}
+		}
 	}
 	
 	/** Services intented only for test  */

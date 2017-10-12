@@ -86,5 +86,11 @@ public class Item {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+	public String setId(String id) {
+		// TODO Auto-generated method stub
+		return itemId;
+		
+	}
 }
 
