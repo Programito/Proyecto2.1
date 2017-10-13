@@ -29,12 +29,13 @@ public class Item {
     
     
     
-    @ManyToOne
+    @ManyToOne(cascade={CascadeType.PERSIST})
+	@JoinColumn(name="collection_id")
     Collection collection; 
     
   
-    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE},
-			optional=false)
+    @OneToOne(cascade=CascadeType.ALL,orphanRemoval=true)
+    //@OneToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval=true)
     Image image; 
     
    
@@ -60,6 +61,11 @@ public class Item {
     public String getId() { 
         return itemId;
     }
+    
+	public void setId(String id) {
+		this.itemId=id;
+		
+	}
     
     
     public Image getImage(){
@@ -87,10 +93,6 @@ public class Item {
                 '}';
     }
 
-	public String setId(String id) {
-		// TODO Auto-generated method stub
-		return itemId;
-		
-	}
+
 }
 

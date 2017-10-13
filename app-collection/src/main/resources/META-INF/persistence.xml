@@ -9,6 +9,9 @@
       <jta-data-source>java:openejb/Resource/dataSourcesLocal</jta-data-source> 
                    
          <class>entities.Item</class>
+         <class>entities.Collection</class>
+         <class>entities.Image</class>
+         <class>entities.User</class>
                   
 		 <properties>
           <property name="eclipselink.target-server" value="org.eclipse.persistence.transaction.JTATransactionController"/>

@@ -1,6 +1,7 @@
 package com.book.test.tools;
 
 import entities.Collection;
+import entities.Image;
 import entities.Item;
 import entities.User;
 
@@ -30,6 +31,14 @@ public class MockHelper {
 		  item.setDescription("Esta es una coleccion de test"); 
 		  item.setName(nameItem); 
 		  return item; 
+    }
+    
+    
+    public static Image mockImage(){ 
+    	byte[] bytImage = new byte[]{1,2,3,4,5,6,7,8,9}; 
+    	Image image = new Image(); 
+    	image.setBytes(bytImage); 
+    	return image; 
     }
     
     

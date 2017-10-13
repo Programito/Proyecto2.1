@@ -30,16 +30,15 @@ public class Collection {
 	// No persistir este miembro
 	 @Transient
 	 private String size; 
-	 
-	 
+
 	 @OneToMany(mappedBy = "collection", 
-			 	cascade = CascadeType.ALL)
+			 	cascade = CascadeType.ALL, orphanRemoval=true)
 	 private Set<Item> items = new HashSet<>(); 
 	 
 	 
 	
 	 @ManyToOne(cascade={CascadeType.PERSIST})
-	 @JoinColumn(name="user_id")
+	 @JoinColumn(name="USER_ID")
 	 private User user;
 
 
