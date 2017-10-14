@@ -242,6 +242,40 @@ public class AppServices implements InfAppServices  {
 		}		
 	}
 	
+	public Boolean logExiste(@NotNull String email) { 
+		boolean salida=true;
+		/*try{
+			List<User> list = entityManager.createNamedQuery(User.QUERY_USER_BY_EMAIL) 
+    			.setParameter("email",email).getResultList();
+			//TODO verificar formato correo 		
+			if(list==null || list.size()!=1){
+				salida=false;
+			}
+		}
+		catch(Exception e){
+			salida=false;
+			System.out.println("la lista da error por null point exception");
+		}*/
+		try{
+		List<User> usuarios=getAll(User.class);
+		return salida;
+		}
+		catch(Exception e){
+			salida=false;
+			return salida;
+		}
+		
+		
+		
+		
+		
+		
+	}
+
+	
+	
+	
+	
 
 
 }

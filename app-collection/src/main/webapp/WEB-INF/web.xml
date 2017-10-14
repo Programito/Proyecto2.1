@@ -34,4 +34,29 @@
     <servlet-name>ServletServerImages</servlet-name>
     <url-pattern>/server/image/*</url-pattern>
   </servlet-mapping>
+  
+    <servlet>
+    <servlet-name>ServletSignIn</servlet-name>
+    <servlet-class>com.book.app.servlet.ServletSignIn</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  	</servlet>
+  	<servlet-mapping>
+    <servlet-name>ServletSignIn</servlet-name>
+    <url-pattern>/server/ServletSignIn</url-pattern>
+  	</servlet-mapping>
+  	
+  	
+  	<servlet>
+    <servlet-name>ServletSignUP</servlet-name>
+    <servlet-class>com.book.app.servlet.ServletSignUP</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  	</servlet>
+  	<servlet-mapping>
+    <servlet-name>ServletSignUP</servlet-name>
+    <url-pattern>/server/ServletSignUP</url-pattern>
+  	</servlet-mapping>
+  
+  
+  
+  
 </web-app>

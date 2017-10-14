@@ -33,8 +33,8 @@ public class UserServicesTest {
    @Before
     public void before() throws NamingException{   
     	EJBContainer ejbContainer = TestEjbHelper.getEjbContainer();  	
-    	 ejbContainer.getContext().bind("inject", this);    	
-    	 service.removeAll(User.class);	
+    	ejbContainer.getContext().bind("inject", this);    	
+    	service.removeAll(User.class);	
     }
         
      

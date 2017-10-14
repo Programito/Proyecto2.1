@@ -8,8 +8,8 @@ import java.nio.file.Paths;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
@@ -19,14 +19,14 @@ import javax.servlet.http.Part;
 
 import com.book.app.business.AppServices;
 import com.book.app.business.ImageService;
+import com.book.app.business.InfAppServices;
 
-import entities.Collection;
 import entities.Image;
 import entities.User;
 
 
 @MultipartConfig
-public class ServletCreateCollection extends HttpServlet {
+public class ServletSignUP extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	
@@ -34,31 +34,43 @@ public class ServletCreateCollection extends HttpServlet {
 	/* referencia por inyección */
 	@EJB
 	private  AppServices service; 
+	
+	@Inject
+	private InfAppServices services; 
  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
           
 		
-		User user = HttpHelper.getSessionUser(request); 
-		if(user==null){
-			response.sendRedirect("signin.html"); 
-			return; 
-		}
+		String messageResponse="";
+		String email= request.getParameter("email");  
+		String name= request.getParameter("nombre");  
 		
-		Collection collection = HttpHelper.getParametesCollection(request); 		   
 		checkParameters(); 
 		
-		
-		
-		
+		User user = new User();
+		user.setEmail(email);
+		user.setName(name); 
 		
 		try{
 			
-			service.addCollection(user.getId(), collection);
-
+			services.signUpUser(user);
+		
 	    }catch(EJBException e){
 	    	
-	    	//TODO control error
+	    	e.getCausedByException(); 
+	    	if(e.getClass().isAssignableFrom(EntityExistsException.class)){
+	    		response.setContentType("text/html");
+	    		
+	    		PrintWriter out=response.getWriter();
+	    		out.println(salidaEmailIncorrecto(email)); 
+	    		
+	    	}else {
+	    		//Erro, compruebe los datos del formulario o intentelo mas tarde
+	    		response.setContentType("text/html");
+	    		PrintWriter out=response.getWriter();
+	    		out.println(salidaEmailIncorrecto(email)); 
+	    	}
 	    	
 	    	return; 
 	    }
@@ -66,7 +78,9 @@ public class ServletCreateCollection extends HttpServlet {
 		
 		   
 		HttpHelper.saveSessionUser(request, user);
-		response.sendRedirect("/ServletHome");
+		response.sendRedirect("/app-book/index.html");
+		
+		
 		
 	}
 	
@@ -104,6 +118,27 @@ public class ServletCreateCollection extends HttpServlet {
 		}
 
 		return buffer.toByteArray();
+	}
+	
+	
+	private String salidaEmailIncorrecto(String emailUser){
+		String salida="";
+		salida= "<html>" 
+				+ "<head>"
+				+ "<title> Error </title>"
+				+ "</head>"
+				+ "<body>"
+				+ "<h1> Error al registrar usuario  </h1>";
+		
+		if(emailUser!=null && !emailUser.equals("")){
+			salida = salida + "<p> El "+ emailUser + " ya esta registrado</p>";
+		}
+		else{
+			salida = salida +  "<p> La entradas no son validas</p>";
+		}
+		salida=salida + "<a href='/app-book/registrar.html'>Volver a registrar un Usuario Nuevo</a>";
+		salida=salida + "</body> </html>";
+		return salida;
 	}
 	
 	

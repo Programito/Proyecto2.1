@@ -4,12 +4,43 @@
         <title>Acceso</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
+	
+	<style>
+
+	body{
+		background-color:#FFC;
+	}
+
+	#principal{
+	position: absolute;
+	top:38%;
+	left:38%;
+	padding:10px 10px 10px 50px;
+	background-color:#F93;	
+	box-shadow: 10px 10px 5px 0px #999999;
+	border-radius: 10px;
+	width: 20%;
+	align:center;
+	text-align: center;
+	
+	}
+
+	h1{
+		text-align:center;
+	}
+
+
+	</style>
    <body>
-        <h1>Registro usuarios</h1>
-		<form action="./servlet/global?option=signup" method="post">
-			Nombre: <input type="text" name="nombre"><br>
-			Email: <input type="email" name="email"><br>
+		<div id=principal>
+		<h1>Nuevo Usuario</h1>
+		<form action="./server/ServletSignUP" method="post">
+			Nombre: <input type="text" required="required" name="nombre"><br>
+			Email: <input type="email" required="required" name="email"><br>
 			<input type="submit" value="Registrar">
 		</form>		
-    </body>
+		<br>
+		<a href="./index.html">Login</a>
+		</div>
+	</body>
 </html>

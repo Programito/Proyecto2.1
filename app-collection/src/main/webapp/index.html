@@ -1,14 +1,45 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Start Page</title>
+        <title>Index</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
+	
+	<style>
+
+	body{
+		background-color:#FFC;
+	}
+
+	#principal{
+	position: absolute;
+	top:36%;
+	left:36%;
+	padding:10px 10px 10px 50px;
+	background-color:#F93;	
+	box-shadow: 10px 10px 5px 0px #999999;
+	border-radius: 10px;
+	width: 20%;
+	align:center;
+	text-align: center;
+	
+	}
+
+	h1{
+		text-align:center;
+	}
+
+
+	</style>
    <body>
-        <h1>Catalogo de libros Menu Principal</h1>
-        <p> <a href='insertbook.html'> Insertar un book   </a></p> 
-        <p> <a href='./servlet/global'> Ver todos los libros  </a></p>
-        
-           <p> <a href='insertimage.html'> Insertar una imagen  </a></p>                        
-    </body>
+		<div id=principal>
+        <h1>Acceso Usuario</h1>
+		<form action="./server/ServletSignIn" method="post">
+			Email: <input type="email" required="required" name="email"><br>
+			<input type="submit" value="Enviar">
+		</form>	
+		<br>
+		<a href="./registrar.html">Registrar Usuario Nuevo</a>
+		</div>
+	</body>
 </html>
