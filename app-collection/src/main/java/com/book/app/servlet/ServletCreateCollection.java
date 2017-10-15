@@ -49,42 +49,14 @@ public class ServletCreateCollection extends HttpServlet {
 			response.sendRedirect("/app-book/index.html");
 			return; 
 		}
-		/*
-		//Collection collection = HttpHelper.getParametesCollection(request); 		   
-		//checkParameters(); 
-		String idCollection=HttpHelper.getCollectionId(request);
-		if(idCollection==null){
-			System.out.println("crear nueva collecion");
-			String name = request.getParameter("name");
-			String description = request.getParameter("description");
-			System.out.println("Name:" + name);
-			System.out.println("description:" + description);
-				if(name!=null && description!=null){
-					Collection collection= new Collection();
-					try{
-						services.addCollection(user.getId(), collection);
-					}catch(EJBException e){
-							System.out.println("error");
-							response.sendRedirect("/app-book/servlet/ServletCreateCollection");
-							return; 
-						}
-				}	
-			}else{
-				System.out.println("Modificar collecion");
-			}*/
-		
-		/*HttpHelper.saveSessionUser(request, user);
-		response.sendRedirect("/ServletHome");*/
-		
 
-		String id=request.getParameter("id");
+		String idCollection=request.getParameter("idColection");
 		String description = request.getParameter("description");
 		String name = request.getParameter("name");
-		if(id==null && description!=null && name!=null){
+		if(idCollection==null && description!=null && name!=null){
 			Collection collection= new Collection();
 			collection.setName(name);
 			collection.setDescription(description);
-			System.out.println("funciona hasta aqui");
 			try{
 				services.addCollection(user.getId(), collection);
 				response.sendRedirect("/app-book/servlet/global");
@@ -94,14 +66,35 @@ public class ServletCreateCollection extends HttpServlet {
 					return; 
 			}
 		}
+		else if(idCollection!=null  && description!=null && name!=null){
+			Collection collection= new Collection();
+			collection.setName(name);
+			collection.setDescription(description);
+			collection.setId(idCollection);
+			try{
+				services.updateCollection(collection);
+				response.sendRedirect("/app-book/servlet/global");
+			}catch(EJBException e){
+					System.out.println("error");
+					response.sendRedirect("/app-book/servlet/ServletCreateCollection");
+					return; 
+			}
+		}else if(idCollection!=null){
+			response.setContentType("text/html");
+			
+			PrintWriter out=response.getWriter();
+			
+			out.println(htmlUpdateCollection(idCollection));
+			
+		}else{
+			response.setContentType("text/html");
+			
+			PrintWriter out=response.getWriter();
+			
+			out.println(htmlAddCollection());
+		}
 		
 		
-		
-		response.setContentType("text/html");
-		
-		PrintWriter out=response.getWriter();
-		
-		out.println(htmlAddCollection());
 		
 	}
 	
@@ -158,7 +151,47 @@ public class ServletCreateCollection extends HttpServlet {
 		return salida;
 	}
 	
+	private String htmlUpdateCollection(String idCollecion){
+		
+		String salida="";
+		
 	
+		
+		salida="<!DOCTYPE html>"
+		+ "<html>"
+		    +"<head>"
+		        + "<title>Nueva Coleccion</title>"
+		        + "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"
+		   + " </head>"
+			
+			+ "<style>"
 
+			+ "body{background-color:#FFC;}"
+			+ "#principal{position: absolute;top:38%;left:38%;padding:10px 10px 10px 50px;background-color:#F93;box-shadow: 10px 10px 5px 0px #999999;border-radius: 10px;width: 20%;"
+			+ "align:center;text-align: center;}"
+			+ "h1{text-align:center;}"
+
+
+			+ "</style>"
+		   + "<body>"
+				+"<div id=principal>"
+		        + "<h1>Update Coleccion</h1>"
+				+ "<form action='/app-book/servlet/ServletCreateCollection' method='post'>"
+		        	+ "ID: <input type='text'  name='idColection' value='"+idCollecion+"' readonly><br>"
+					+ "Nombre: <input type='text' required='required' name='name'><br>"
+					+ "Descripcion: <input type='text' required='required' name='description'><br>"
+					+ "<input type='submit' value='Update Coleccion'>"
+				+ "</form>"	
+				+ "<br>"
+				+ "<a href='/app-book/servlet/global'>Volver </a>"
+				+ "</div>"
+			+ "</body>"
+		+ "</html>";
+		
+		
+		
+		return salida;
+	
+	}
 
 }

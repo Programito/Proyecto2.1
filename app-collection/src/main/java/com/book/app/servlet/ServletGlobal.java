@@ -43,7 +43,7 @@ public class ServletGlobal extends HttpServlet{
 		
 		String type = request.getParameter("type");
 		//si hay una colleccion activa
-		String idCollection = request.getParameter("collection");
+		String idCollection = request.getParameter("idColection");
 		
 		User user = HttpHelper.getSessionUser(request);
 		
@@ -54,26 +54,26 @@ public class ServletGlobal extends HttpServlet{
 			HttpHelper.deleteSessionUser(request);
 			response.sendRedirect("/app-book/index.html");
 		}else if(type!=null && type.equals("newCollection")){;
-			HttpHelper.deleteSessionCollection(request);
 			response.sendRedirect("/app-book/servlet/ServletCreateCollection");
+		}else if(type!=null && type.equals("remove") && idCollection!=null){
+			removeCollecction(idCollection);
+			response.sendRedirect("/app-book/servlet/global");
 		}else if(idCollection==null){
-			String salida= HttpHelper.getEmail(request);
 			response.setContentType("text/html");
 			PrintWriter out=response.getWriter();
-			System.out.println("UsuarioID:" + HttpHelper.getId(request));
-			User result = services.find(User.class, HttpHelper.getId(request));  
-			ArrayList<Collection> list =  new ArrayList<>(result.getCollections()); 
-			if(list.size()==0){
-				System.out.println("vacia");
-			}
-			for(int i=0;i<list.size();i++){
-				System.out.println(list.get(i).getId());
-			}
-			out.println(paginaGlobal(request,"-1"));
+			out.println(paginaGlobal(request,"-1",services));
+		}else{
+			response.setContentType("text/html");
+			PrintWriter out=response.getWriter();
+			out.println(paginaGlobal(request,idCollection,services));
 		}
+		
 		
 	}
 	
+
+
+
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -82,7 +82,7 @@ public class ServletGlobal extends HttpServlet{
 	}
 	
 	
-	private String paginaGlobal(HttpServletRequest request, String idCollection){
+	private String paginaGlobal(HttpServletRequest request, String idCollection,InfAppServices services){
 		String salida="";
 		
 		
@@ -117,23 +117,18 @@ public class ServletGlobal extends HttpServlet{
 				+ "</div>";
 		
 			if(!idCollection.equals("-1")){
-				System.out.println("entre");
-				System.out.println("IDCOLLection: " + idCollection);
 				
 				salida= salida + "<div id=arribaDerecha>"
-					+ "<label> Coleccion Actual <label>"
-					+ "<button onclick='myFunction()' class='botonImagen'></button>"
-					+ "<button onclick='myFunction()' class='borrarImagen'></button>"	
+					+ "<label>"+ getNombreCollection(idCollection,services) + "<label>"
+					+ "<button onclick='update("+idCollection+")' class='botonImagen'></button>"
+					+ "<button onclick='borrar("+idCollection+")' class='borrarImagen'></button>"	
 				+ "</div>";
 			}
 			
 			salida = salida + "<div id=abajoIzquierda>";
 			salida = salida + textoCollecciones(request);
 			
-			salida= salida	+ " <button onclick='myFunction()' class='botonTamany'>Colleccion0</button>"
-					 + "<br>"
-					 + "<br>"
-					 + "<button onclick='myFunction()' class='botonTamany'>Colleccion1</button>"
+			salida= salida	
 					 + "<br>"
 					 + "<br>"
 					 + "<label> Adiccionar Coleccion </label>"
@@ -180,6 +175,18 @@ public class ServletGlobal extends HttpServlet{
 				+ "alert('nuevaColeccion');"
 					+ "window.location='/app-book/servlet/global?type=newCollection';"
 					+ "}"
+				+ "function seleccionarColeccion(entrada) {"
+							+ "window.location='/app-book/servlet/global?idColection='+entrada;"
+							+ "}"
+							
+				+ "function borrar(entrada) {"
+				+ "window.location='/app-book/servlet/global?type=remove&&idColection='+entrada;"
+				+ "}"
+				
+				+ "function update(entrada) {"
+					+ "window.location='/app-book/servlet/ServletCreateCollection?idColection='+entrada;"
+				+ "}"
+				
 			+ "</script>"
 		+ "</html>";
 		
@@ -195,9 +202,31 @@ public class ServletGlobal extends HttpServlet{
 		}
 		for(int i=0;i<list.size();i++){
 			salida=salida+ 
-					 " <button onclick='myFunction()' class='botonTamany'>"+ list.get(i).getName() +"</button><br>";
+					 " <button onclick='seleccionarColeccion("+list.get(i).getId()+")' class='botonTamany'>"+ list.get(i).getName() +"</button><br>";
 		}
 		return salida;
+	}
+	
+	private String getNombreCollection(String idCollection,InfAppServices services){
+		String nombreCollection="";
+		try{
+		Collection collection=services.find(Collection.class, idCollection);
+		return collection.getName();
+		}
+		catch(Exception e){
+			nombreCollection="Error en collection";
+			return nombreCollection;
+		}
+	}
+	
+
+	private void removeCollecction(String idCollection) {
+		try{
+			services.removeCollection(idCollection);
+		}
+		catch(Exception e){
+			System.out.println("Error al eliminar collecction");
+		}
 	}
 	
 }
