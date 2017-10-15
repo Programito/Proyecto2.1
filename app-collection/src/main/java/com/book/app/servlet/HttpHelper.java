@@ -15,7 +15,7 @@ public class HttpHelper {
 	private static final String USER_ID = "user_id";
 	private static final String USER_EMAIL = "user_email";
 	private static final String USER_NAME = "user_name";
-
+	private static final String COLLECTION_ID = "collection_id";
 
 
 	public static String getStyleTable(){
@@ -78,6 +78,12 @@ public class HttpHelper {
 		String salida=session.getAttribute(USER_EMAIL).toString();	
 		return salida;
 	}
+	
+	public static String getId(HttpServletRequest request){
+		HttpSession session = request.getSession(); 	
+		String salida=session.getAttribute(USER_ID).toString();	
+		return salida;
+	}
 
 
 
@@ -86,5 +92,23 @@ public class HttpHelper {
 		return null; 
 	}
 	
+	public static void saveSessionCollection(HttpServletRequest request, String idCollection){
+		HttpSession session = request.getSession(); 		
+		session.setAttribute(COLLECTION_ID, idCollection);  	
+	}
+	
+	public static void deleteSessionCollection(HttpServletRequest request){
+		HttpSession session = request.getSession(); 	
+		session.setAttribute(COLLECTION_ID, null); 
+	}
+	
+	public static String getCollectionId(HttpServletRequest request){
+		HttpSession session = request.getSession(); 
+		String salida=null;
+		if(COLLECTION_ID!=null){
+			salida=session.getAttribute(COLLECTION_ID).toString();	
+		}
+		return salida;
+	}
 	
 }

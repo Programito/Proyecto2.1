@@ -73,7 +73,7 @@ public class ServletSignIn extends HttpServlet {
 	    		//Error, compruebe los datos del formulario o intentelo mas tarde
 	    		response.setContentType("text/html");
 	    		PrintWriter out=response.getWriter();
-	    		out.println(salidaEmailIncorrecto("tipo 2:" + emailUser));
+	    		out.println(salidaEmailIncorrecto(emailUser));
 	    	}
 	    	
 	    	return; 
@@ -87,8 +87,7 @@ public class ServletSignIn extends HttpServlet {
 		out.println(salidaEmailIncorrecto("Usuario registrado"));
 		
 		HttpHelper.saveSessionUser(request, user);
-		System.out.println("---------------------" + HttpHelper.getEmail(request));
-		response.sendRedirect("/app-book/index.html");
+		response.sendRedirect("/app-book/servlet/global");
 		
 	}
 	

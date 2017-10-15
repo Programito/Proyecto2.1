@@ -56,6 +56,15 @@
     <url-pattern>/server/ServletSignUP</url-pattern>
   	</servlet-mapping>
   
+   	<servlet>
+    <servlet-name>ServletCreateCollection</servlet-name>
+    <servlet-class>com.book.app.servlet.ServletCreateCollection</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  	</servlet>
+  	<servlet-mapping>
+    <servlet-name>ServletCreateCollection</servlet-name>
+    <url-pattern>/servlet/ServletCreateCollection</url-pattern>
+  	</servlet-mapping>
   
   
   
