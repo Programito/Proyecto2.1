@@ -66,6 +66,14 @@
     <url-pattern>/servlet/ServletCreateCollection</url-pattern>
   	</servlet-mapping>
   
-  
+ 	<servlet>
+    <servlet-name>ServletCreateItem</servlet-name>
+    <servlet-class>com.book.app.servlet.ServletCreateItem</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  	</servlet>
+  	<servlet-mapping>
+    <servlet-name>ServletCreateItem</servlet-name>
+    <url-pattern>/servlet/ServletCreateItem</url-pattern>
+  	</servlet-mapping>
   
 </web-app>

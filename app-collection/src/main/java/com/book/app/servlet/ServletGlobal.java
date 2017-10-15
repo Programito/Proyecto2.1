@@ -158,7 +158,7 @@ public class ServletGlobal extends HttpServlet{
 						+ "<br>"
 						+ "<br>"
 						+ "<label> Adiccionar Item </label>"
-						+ "<button onclick='myFunction()' class='anadirImagen'></button>"
+						+ "<button onclick='addItem("+idCollection+")' class='anadirImagen'></button>"
 				+ "</div>";
 			}
 			salida = salida + "</body>"
@@ -187,6 +187,9 @@ public class ServletGlobal extends HttpServlet{
 					+ "window.location='/app-book/servlet/ServletCreateCollection?idColection='+entrada;"
 				+ "}"
 				
+				+ "function addItem(entrada) {"
+					+ "window.location='/app-book/servlet/ServletCreateItem?idCollection='+entrada;"
+					+ "}"
 			+ "</script>"
 		+ "</html>";
 		
